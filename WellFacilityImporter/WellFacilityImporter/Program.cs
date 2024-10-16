@@ -211,7 +211,7 @@
             FacilityLicenceDataImporter.ImportData(connectionString, $"{baseDataDirectory}\\{fileName}");
         }
 
-        private static async void ImportWellWikiData(string connectionString)
+        private static void ImportWellWikiData(string connectionString)
         {
             var defaultCompanyName = "Logic_Energy_Ltd.";
             Console.Write("Please enter a company name or use default:");
@@ -225,7 +225,7 @@
             Console.WriteLine();
             Console.WriteLine("Importing Well Wiki Data...");
             Console.WriteLine();
-            await WellWikiDataImporter.ImportData(defaultCompanyName, connectionString);
+            WellWikiDataImporter.ImportData(defaultCompanyName, connectionString).GetAwaiter().GetResult();
         }
     }
 }
