@@ -1,0 +1,9 @@
+-- The Database Uses SQL CLR
+
+-- Enable CLR integration
+EXEC sp_configure 'clr enabled', 1;
+RECONFIGURE;
+
+-- Disable CLR strict security
+EXEC sp_configure 'clr strict security', 0;
+RECONFIGURE;
