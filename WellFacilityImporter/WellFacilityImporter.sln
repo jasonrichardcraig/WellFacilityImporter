@@ -5,7 +5,13 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WellFacilityImporter", "WellFacilityImporter\WellFacilityImporter.csproj", "{D18C378D-AEAC-4928-B7E9-F77F24A53269}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WellFacilityCLRUtilities", "WellFacilityCLRUtilities\WellFacilityCLRUtilities.sqlproj", "{01BCCA10-678F-423C-8EE0-166ADD6BB700}"
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "WellFacilityClrUtilities", "WellFacilityClrUtilities\WellFacilityClrUtilities.sqlproj", "{01BCCA10-678F-423C-8EE0-166ADD6BB700}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlClrNuGetPackageSource", "SqlClrNuGetPackageSource\SqlClrNuGetPackageSource.csproj", "{EA3547DC-B38F-4B6B-9611-A7108D4E2B1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\TestHarness.csproj", "{77596683-55F6-4CBC-AA9C-D798410A2684}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbertaTownshipSystemImporter", "AlbertaTownshipSystemImporter\AlbertaTownshipSystemImporter.csproj", "{25692A7A-F576-40D9-A035-9BD4C5D4E233}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +29,18 @@ Global
 		{01BCCA10-678F-423C-8EE0-166ADD6BB700}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01BCCA10-678F-423C-8EE0-166ADD6BB700}.Release|Any CPU.Build.0 = Release|Any CPU
 		{01BCCA10-678F-423C-8EE0-166ADD6BB700}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EA3547DC-B38F-4B6B-9611-A7108D4E2B1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA3547DC-B38F-4B6B-9611-A7108D4E2B1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA3547DC-B38F-4B6B-9611-A7108D4E2B1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA3547DC-B38F-4B6B-9611-A7108D4E2B1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{77596683-55F6-4CBC-AA9C-D798410A2684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77596683-55F6-4CBC-AA9C-D798410A2684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77596683-55F6-4CBC-AA9C-D798410A2684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77596683-55F6-4CBC-AA9C-D798410A2684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25692A7A-F576-40D9-A035-9BD4C5D4E233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25692A7A-F576-40D9-A035-9BD4C5D4E233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25692A7A-F576-40D9-A035-9BD4C5D4E233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25692A7A-F576-40D9-A035-9BD4C5D4E233}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
