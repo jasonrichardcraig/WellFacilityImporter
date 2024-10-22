@@ -1,20 +1,16 @@
 USE [WellFacilityRepository]
 GO
 
--- DlsCoordinate is 06-02-047-07W5 -> 53.023333, -114.918916
+-- Longitude / Latitude from DLS 06-02-047-07W5 -> 53.023333, -114.918916
 
-DECLARE @lsd int = 6;
-DECLARE @section int = 2;
-DECLARE @township int = 47;
-DECLARE @range int = 7;
-DECLARE @meridian int = 5;
-DECLARE @point geography;
+DECLARE @latitude float = 53.023333;
+DECLARE @longitude float = -114.918916;
 
-SET @point = [Converters].[ConvertDlsToLatLong] (@lsd, @section, @township,@range, @meridian);
+DECLARE @dlsCoordinate [Converters].[DlsCoordinate];
 
-PRINT 'Latitude: ' +  CAST(@point.Lat as varchar(64));
-PRINT 'Longitude: ' +  CAST(@point.Long as varchar(64));
+SET @dlsCoordinate = [Converters].[ConvertLatLongToDls] (@latitude, @longitude);
 
+PRINT @dlsCoordinate.ToString();
 GO
 
 
