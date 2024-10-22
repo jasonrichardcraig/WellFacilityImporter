@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WellFacilityClrUtilities.Functions;
 
 namespace TestHarness
 {
@@ -16,9 +11,9 @@ namespace TestHarness
 
             Console.WriteLine($"Testing conversion for Latitude: {testLatitude}, Longitude: {testLongitude}\n");
 
-            DlsCoordinate dlsCoordinate = LatLongToDlsConverter.ConvertLatLongToDls(testLatitude, testLongitude);
+            var dlsCoordinate = LatLongToDlsConverter.ConvertLatLongToDls(testLatitude, testLongitude);
 
-            Console.WriteLine($"\nCalculated DLS Coordinate: {dlsCoordinate}");
+            Console.WriteLine($"\nCalculated DLS Coordinate: {dlsCoordinate.ToString()}");
             Console.WriteLine("Actual DLS Coordinate is 06-02-047-07W5");
             Console.ReadKey();
         }

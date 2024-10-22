@@ -1,32 +1,49 @@
+// DlsCoordinate.cs
 using System;
+using System.Data.SqlTypes;
 using System.IO;
-using WellFacilityClrUtilities.Functions;
+using Microsoft.SqlServer.Server;
 
+/// <summary>
+/// Represents a DLS Coordinate as a SQL CLR User-Defined Type without Direction.
+/// </summary>
 [Serializable]
-public struct DlsCoordinate
+[SqlUserDefinedType(Format.UserDefined, IsByteOrdered = true, MaxByteSize = 40)]
+public struct DlsCoordinate : INullable, IBinarySerialize
 {
-    public bool IsNull { get; set; }
+    private bool isNull;
+    public bool IsNull
+    {
+        get { return isNull; }
+    }
+
     public int Lsd { get; set; }
     public int Section { get; set; }
     public int Township { get; set; }
     public int Range { get; set; }
     public int Meridian { get; set; }
-    public MeridianDirection Direction { get; set; }
-
-    // Constructor
-    public DlsCoordinate(bool isNull, int lsd, int section, int township, int range, int meridian, MeridianDirection direction)
-    {
-        IsNull = isNull;
-        Lsd = lsd;
-        Section = section;
-        Township = township;
-        Range = range;
-        Meridian = meridian;
-        Direction = direction;
-    }
 
     // Null instance
-    public static DlsCoordinate Null => new DlsCoordinate(true, 0, 0, 0, 0, 0, MeridianDirection.East);
+    public static DlsCoordinate Null
+    {
+        get
+        {
+            DlsCoordinate dc = new DlsCoordinate();
+            dc.isNull = true;
+            return dc;
+        }
+    }
+
+    // Constructor
+    public DlsCoordinate(bool isNull, int lsd, int section, int township, int range, int meridian)
+    {
+        this.isNull = isNull;
+        this.Lsd = lsd;
+        this.Section = section;
+        this.Township = township;
+        this.Range = range;
+        this.Meridian = meridian;
+    }
 
     // ToString method
     public override string ToString()
@@ -34,58 +51,104 @@ public struct DlsCoordinate
         if (IsNull)
             return "NULL";
 
-        string meridianPrefix = Direction == MeridianDirection.West ? "W" : "E";
         // Format: LSD-Section-Township-RangeMeridian (e.g., 07-02-047-07W5)
-        return $"{Lsd:D2}-{Section:D2}-{Township:D3}-{Range:D2}{meridianPrefix}{Meridian}";
+        return $"{Lsd:D2}-{Section:D2}-{Township:D3}-{Range:D2}W{Meridian}";
     }
 
     // Parse method
-    public static DlsCoordinate Parse(string s)
+    public static DlsCoordinate Parse(SqlString s)
     {
-        if (string.IsNullOrEmpty(s))
+        if (s.IsNull)
             return Null;
 
-        // Expected format: LSD-Section-Township-RangeMeridian (e.g., 07-02-047-07W5)
-        string[] parts = s.Split('-');
+        string str = s.Value;
+        if (string.IsNullOrEmpty(str))
+            return Null;
+
+        // Expected format: LSD-Section-Township-RangeMeridian (e.g., 07-02-047-07E5)
+        string[] parts = str.Split('-');
         if (parts.Length != 4)
-            throw new ArgumentException("Invalid DLS coordinate format. Expected format: LSD-Section-Township-RangeMeridian (e.g., 07-02-047-07W5).");
+            throw new ArgumentException("Invalid DLS coordinate format. Expected format: LSD-Section-Township-RangeMeridian (e.g., 07-02-047-07E5).");
 
-        // Extract Range and Meridian from the fourth part (e.g., "07W5")
+        // Extract Range and Meridian from the fourth part (e.g., "07E5")
         string rangeMeridianPart = parts[3];
-        // Assuming Meridian is prefixed with 'W' or 'E'
-        int meridianIndex = rangeMeridianPart.IndexOfAny(new char[] { 'W', 'E' });
-        if (meridianIndex == -1)
-            throw new ArgumentException("Invalid Meridian format. Expected 'W' or 'E' followed by an integer (e.g., W5).");
+        // Assuming Meridian is prefixed with 'E'
+        if (!rangeMeridianPart.StartsWith("E"))
+            throw new ArgumentException("Invalid Meridian format. Expected 'E' followed by an integer (e.g., E5).");
 
-        string rangePart = rangeMeridianPart.Substring(0, meridianIndex);
-        string meridianPrefix = rangeMeridianPart.Substring(meridianIndex, 1);
-        string meridianPart = rangeMeridianPart.Substring(meridianIndex + 1);
+        string rangePart = rangeMeridianPart.Substring(0, 2); // "07"
+        string meridianPart = rangeMeridianPart.Substring(2);   // "5"
 
         if (!int.TryParse(rangePart, out int rangeValue))
             throw new ArgumentException("Invalid Range format. Expected an integer (e.g., 07).");
 
         if (!int.TryParse(meridianPart, out int meridianValue))
-            throw new ArgumentException("Invalid Meridian format. Expected an integer after 'W' or 'E' (e.g., W5).");
+            throw new ArgumentException("Invalid Meridian format. Expected an integer after 'E' (e.g., E5).");
 
-        MeridianDirection direction = meridianPrefix == "W" ? MeridianDirection.West : MeridianDirection.East;
+        int lsd = int.Parse(parts[0]);
+        int section = int.Parse(parts[1]);
+        int township = int.Parse(parts[2]);
 
-        return new DlsCoordinate(false, int.Parse(parts[0]), int.Parse(parts[1]), int.Parse(parts[2]), rangeValue, meridianValue, direction);
+        return new DlsCoordinate(false, lsd, section, township, rangeValue, meridianValue);
     }
 
-    // Serialization methods (optional)
-    public void Write(BinaryWriter writer)
+    // Serialization: Deserialize from binary
+    public void Read(BinaryReader r)
     {
-        writer.Write(IsNull);
-        writer.Write(Lsd);
-        writer.Write(Section);
-        writer.Write(Township);
-        writer.Write(Range);
-        writer.Write(Meridian);
-        writer.Write((int)Direction);
+        isNull = r.ReadBoolean();
+        if (!isNull)
+        {
+            Lsd = r.ReadInt32();
+            Section = r.ReadInt32();
+            Township = r.ReadInt32();
+            Range = r.ReadInt32();
+            Meridian = r.ReadInt32();
+        }
     }
 
-    public void Read(BinaryReader reader)
+    // Serialization: Serialize to binary
+    public void Write(BinaryWriter w)
     {
-        // Implement if needed
+        w.Write(isNull);
+        if (!isNull)
+        {
+            w.Write(Lsd);
+            w.Write(Section);
+            w.Write(Township);
+            w.Write(Range);
+            w.Write(Meridian);
+        }
+    }
+
+    // Override Equals and GetHashCode for proper comparison in tests
+    public override bool Equals(object obj)
+    {
+        if (obj is DlsCoordinate other)
+        {
+            return this.Lsd == other.Lsd &&
+                   this.Section == other.Section &&
+                   this.Township == other.Township &&
+                   this.Range == other.Range &&
+                   this.Meridian == other.Meridian &&
+                   this.IsNull == other.IsNull;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        // Custom hash code implementation for compatibility
+        unchecked // Overflow is fine
+        {
+            int hash = 17;
+            hash = hash * 23 + Lsd.GetHashCode();
+            hash = hash * 23 + Section.GetHashCode();
+            hash = hash * 23 + Township.GetHashCode();
+            hash = hash * 23 + Range.GetHashCode();
+            hash = hash * 23 + Meridian.GetHashCode();
+            hash = hash * 23 + isNull.GetHashCode();
+            return hash;
+        }
     }
 }
+

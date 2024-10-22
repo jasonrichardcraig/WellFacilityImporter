@@ -35,7 +35,7 @@ public class DlsToLatLongConverter
         // Retrieve base coordinates from the database
         try
         {
-            using (SqlConnection conn = new SqlConnection("Data Source=(local);Initial Catalog=WellFacilityRepository;Integrated Security=True;Encrypt=False"))
+            using (SqlConnection conn = new SqlConnection("context connection=true"))
             {
                 conn.Open();
 
