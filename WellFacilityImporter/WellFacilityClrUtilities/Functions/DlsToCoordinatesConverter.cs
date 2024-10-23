@@ -4,7 +4,7 @@ using Microsoft.SqlServer.Server;
 using Microsoft.SqlServer.Types;
 using System.Data;
 
-public class DlsToLatLongConverter
+public class DlsToCoordinatesConverter
 {
     // Constants representing the sizes of sections in miles
     private const double QuarterSectionWidthMiles = 0.5; // Each Quarter Section is 1/2 mile square
@@ -19,7 +19,7 @@ public class DlsToLatLongConverter
 
     // CLR function to convert DLS coordinates to latitude and longitude
     [SqlFunction(IsDeterministic = false, IsPrecise = false, DataAccess = DataAccessKind.Read)]
-    public static SqlGeography ConvertDlsToLatLong(int lsd, int section, int township, int range, int meridian)
+    public static SqlGeography ConvertDlsToCoordinates(int lsd, int section, int township, int range, int meridian)
     {
         // Validate input parameters
         if (lsd < 1 || lsd > 16 || section < 1 || section > 36 || township < 1 || range < 1 || meridian < 1)

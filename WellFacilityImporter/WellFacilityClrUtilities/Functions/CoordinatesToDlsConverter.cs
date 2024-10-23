@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-    public class LatLongToDlsConverter
+    public class CoordinatesToDlsConverter
     {
         // Constants representing the sizes of sections in miles
         private const double SectionSizeMiles = 1.0;          // Each Section is approximately 1 mile square
@@ -49,16 +49,16 @@ using System.Data.SqlClient;
     /// <param name="longitude">Longitude in degrees.</param>
     /// <returns>DlsCoordinate object representing the DLS coordinate.</returns>
     [SqlFunction(IsDeterministic = false, IsPrecise = false, DataAccess = DataAccessKind.Read)]
-    public static DlsCoordinate ConvertLatLongToDls(double latitude, double longitude)
+    public static DLS ConvertCoordinatesToDls(double latitude, double longitude)
         {
             // Validate input parameters
             if (latitude < -90.0 || latitude > 90.0)
             {
-                return DlsCoordinate.Null;
+                return DLS.Null;
             }
             if (longitude < -180.0 || longitude > 180.0)
             {
-                return DlsCoordinate.Null;
+                return DLS.Null;
             }
 
             // Variables to store the identified Section's components
@@ -115,7 +115,7 @@ using System.Data.SqlClient;
 
                     if (!sectionFound)
                     {
-                        return DlsCoordinate.Null;
+                        return DLS.Null;
                     }
 
                     // Step 3: Calculate the offset within the Section
@@ -148,7 +148,7 @@ using System.Data.SqlClient;
                             }
                             else
                             {
-                                return DlsCoordinate.Null;
+                                return DLS.Null;
                             }
                         }
                     }
@@ -190,7 +190,7 @@ using System.Data.SqlClient;
                     int meridianValue = Math.Abs(identifiedMeridian); // Assuming meridian is stored as positive integer
 
                     // Step 8: Populate the DlsCoordinate
-                    DlsCoordinate dlsCoordinate = new DlsCoordinate
+                    DLS dlsCoordinate = new DLS
                     {
                         Lsd = determinedLsd, // Integer between 1-16
                         Section = identifiedSection,
@@ -205,13 +205,9 @@ using System.Data.SqlClient;
                     return dlsCoordinate;
                 }
             }
-            catch (SqlException ex)
+            catch
             {
-                return DlsCoordinate.Null;
-            }
-            catch (Exception ex)
-            {
-                return DlsCoordinate.Null;
+                return DLS.Null;
             }
         }
 

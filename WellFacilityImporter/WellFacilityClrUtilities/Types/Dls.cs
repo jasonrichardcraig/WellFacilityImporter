@@ -1,4 +1,3 @@
-// DlsCoordinate.cs
 using System;
 using System.Data.SqlTypes;
 using System.IO;
@@ -9,7 +8,7 @@ using Microsoft.SqlServer.Server;
 /// </summary>
 [Serializable]
 [SqlUserDefinedType(Format.UserDefined, IsByteOrdered = true, MaxByteSize = 40)]
-public struct DlsCoordinate : INullable, IBinarySerialize
+public struct DLS : INullable, IBinarySerialize
 {
     private bool isNull;
     public bool IsNull
@@ -24,18 +23,18 @@ public struct DlsCoordinate : INullable, IBinarySerialize
     public int Meridian { get; set; }
 
     // Null instance
-    public static DlsCoordinate Null
+    public static DLS Null
     {
         get
         {
-            DlsCoordinate dc = new DlsCoordinate();
+            DLS dc = new DLS();
             dc.isNull = true;
             return dc;
         }
     }
 
     // Constructor
-    public DlsCoordinate(bool isNull, int lsd, int section, int township, int range, int meridian)
+    public DLS(bool isNull, int lsd, int section, int township, int range, int meridian)
     {
         this.isNull = isNull;
         this.Lsd = lsd;
@@ -56,7 +55,7 @@ public struct DlsCoordinate : INullable, IBinarySerialize
     }
 
     // Parse method
-    public static DlsCoordinate Parse(SqlString s)
+    public static DLS Parse(SqlString s)
     {
         if (s.IsNull)
             return Null;
@@ -89,7 +88,7 @@ public struct DlsCoordinate : INullable, IBinarySerialize
         int section = int.Parse(parts[1]);
         int township = int.Parse(parts[2]);
 
-        return new DlsCoordinate(false, lsd, section, township, rangeValue, meridianValue);
+        return new DLS(false, lsd, section, township, rangeValue, meridianValue);
     }
 
     // Serialization: Deserialize from binary
@@ -123,7 +122,7 @@ public struct DlsCoordinate : INullable, IBinarySerialize
     // Override Equals and GetHashCode for proper comparison in tests
     public override bool Equals(object obj)
     {
-        if (obj is DlsCoordinate other)
+        if (obj is DLS other)
         {
             return this.Lsd == other.Lsd &&
                    this.Section == other.Section &&

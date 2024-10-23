@@ -6,9 +6,9 @@ GO
 DECLARE @latitude float = 53.023333;
 DECLARE @longitude float = -114.918916;
 
-DECLARE @dlsCoordinate [Converters].[DlsCoordinate];
+DECLARE @dlsCoordinate [Converters].[DLS];
 
-SET @dlsCoordinate = [Converters].[ConvertLatLongToDls] (@latitude, @longitude);
+SET @dlsCoordinate = [Converters].[ConvertCoordinatesToDls] (@latitude, @longitude);
 
 PRINT @dlsCoordinate.ToString();
 GO

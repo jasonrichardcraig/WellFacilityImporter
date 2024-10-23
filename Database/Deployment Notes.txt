@@ -7,3 +7,5 @@ RECONFIGURE;
 -- Disable CLR strict security
 EXEC sp_configure 'clr strict security', 0;
 RECONFIGURE;
+
+Run Configure Assemblies.sql (Must Edit Key Path)
