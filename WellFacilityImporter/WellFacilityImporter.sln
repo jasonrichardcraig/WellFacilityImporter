@@ -11,7 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlClrNuGetPackageSource", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\TestHarness.csproj", "{77596683-55F6-4CBC-AA9C-D798410A2684}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlbertaTownshipSystemImporter", "AlbertaTownshipSystemImporter\AlbertaTownshipSystemImporter.csproj", "{25692A7A-F576-40D9-A035-9BD4C5D4E233}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AlbertaTownshipSystemImporter", "AlbertaTownshipSystemImporter\AlbertaTownshipSystemImporter.csproj", "{25692A7A-F576-40D9-A035-9BD4C5D4E233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnerSync", "EnerSync\EnerSync.csproj", "{E690C67E-C062-4870-8AC7-13DF906757C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{25692A7A-F576-40D9-A035-9BD4C5D4E233}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25692A7A-F576-40D9-A035-9BD4C5D4E233}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25692A7A-F576-40D9-A035-9BD4C5D4E233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E690C67E-C062-4870-8AC7-13DF906757C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E690C67E-C062-4870-8AC7-13DF906757C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E690C67E-C062-4870-8AC7-13DF906757C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E690C67E-C062-4870-8AC7-13DF906757C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
