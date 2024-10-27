@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using Microsoft.SqlServer.Server;
 using Microsoft.SqlServer.Types;
 using System.Data;
+using System.Data.SqlTypes;
 
 public class DlsToCoordinatesConverter
 {
@@ -18,13 +19,19 @@ public class DlsToCoordinatesConverter
     }
 
     // CLR function to convert DLS coordinates to latitude and longitude
-    [SqlFunction(IsDeterministic = false, IsPrecise = false, DataAccess = DataAccessKind.Read)]
-    public static SqlGeography ConvertDlsToCoordinates(int lsd, int section, int township, int range, int meridian)
+    [SqlFunction(IsDeterministic = true, IsPrecise = false, DataAccess = DataAccessKind.Read)]
+    public static SqlGeography ConvertDlsToCoordinates(SqlInt32 lsd, SqlInt32 section, SqlInt32 township, SqlInt32 range, SqlInt32 meridian)
     {
+
+        if (lsd.IsNull || section.IsNull || township.IsNull || range.IsNull || meridian.IsNull)
+        {
+            return SqlGeography.Null; //One or more DLS components are NULL.
+        }
+
         // Validate input parameters
         if (lsd < 1 || lsd > 16 || section < 1 || section > 36 || township < 1 || range < 1 || meridian < 1)
         {
-            throw new ArgumentException("Invalid DLS components provided.");
+            return SqlGeography.Null; //Invalid DLS components provided.
         }
 
         // Variables to store base latitude, longitude, and quarter section
@@ -47,10 +54,10 @@ public class DlsToCoordinatesConverter
                       AND Township = @Township
                       AND Section = @Section", conn))
                 {
-                    cmd.Parameters.Add(new SqlParameter("@Meridian", SqlDbType.Int) { Value = meridian });
-                    cmd.Parameters.Add(new SqlParameter("@Range", SqlDbType.Int) { Value = range });
-                    cmd.Parameters.Add(new SqlParameter("@Township", SqlDbType.Int) { Value = township });
-                    cmd.Parameters.Add(new SqlParameter("@Section", SqlDbType.Int) { Value = section });
+                    cmd.Parameters.Add(new SqlParameter("@Meridian", SqlDbType.Int) { Value = meridian.Value });
+                    cmd.Parameters.Add(new SqlParameter("@Range", SqlDbType.Int) { Value = range.Value });
+                    cmd.Parameters.Add(new SqlParameter("@Township", SqlDbType.Int) { Value = township.Value });
+                    cmd.Parameters.Add(new SqlParameter("@Section", SqlDbType.Int) { Value = section.Value });
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -62,7 +69,7 @@ public class DlsToCoordinatesConverter
                         }
                         else
                         {
-                            throw new Exception("No matching record found for the given DLS components.");
+                            return SqlGeography.Null; //No matching record found for the given DLS components.
                         }
                     }
                 }
@@ -145,7 +152,7 @@ public class DlsToCoordinatesConverter
         {
             for (int col = 0; col < 4; col++)
             {
-                if (lsdPositions[row, col] == lsd)
+                if (lsdPositions[row, col] == lsd.Value)
                 {
                     lsdRow = row;
                     lsdCol = col;

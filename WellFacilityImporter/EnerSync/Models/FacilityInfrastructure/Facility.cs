@@ -15,6 +15,8 @@ public partial class Facility
 
     public string? FacilityName { get; set; }
 
+    public string? FormattedFacilityName { get; private set; }
+
     public string? FacilitySubType { get; set; }
 
     public string? FacilitySubTypeDesc { get; set; }
@@ -34,6 +36,10 @@ public partial class Facility
     public int? FacilityRange { get; set; }
 
     public int? FacilityMeridian { get; set; }
+
+    public double? Latitude { get; private set; }
+
+    public double? Longitude { get; private set; }
 
     public string? FacilityLicenceStatus { get; set; }
 

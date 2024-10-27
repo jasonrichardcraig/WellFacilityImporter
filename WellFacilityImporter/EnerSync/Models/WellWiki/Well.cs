@@ -7,6 +7,8 @@ public partial class Well
 {
     public string WellId { get; set; } = null!;
 
+    public string? AlternateWellId { get; private set; }
+
     public string? WellName { get; set; }
 
     public string? Location { get; set; }

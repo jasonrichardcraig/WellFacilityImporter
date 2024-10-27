@@ -71,18 +71,22 @@ namespace EnerSync.Data
         public virtual DbSet<WellWikiModels.WellPerforationTreatment> WellPerforationTreatments { get; set; }
         public virtual DbSet<WellWikiModels.WellProductionDatum> WellProductionData { get; set; }
 
+        // Define the static method representing the ConvertDlsToWellID CLR function
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 #warning To protect potentially sensitive information in your connection string, move it out of source code. Consider using the Name= syntax to read it from configuration.
 
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=WellFacilityRepository;TrustServerCertificate=True;Integrated Security=true");
+                optionsBuilder.UseSqlServer("Data Source=(local);Initial Catalog=WellFacilityRepository;TrustServerCertificate=True;Integrated Security=true", x =>
+                x.UseNetTopologySuite());
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             // AlbertaTownshipSystem Configuration
             modelBuilder.Entity<AlbertaTownshipSystemModels.Coordinate>(entity =>
             {
@@ -408,6 +412,18 @@ namespace EnerSync.Data
                 entity.Property(e => e.FacilityLicenceStatus).HasMaxLength(50);
                 entity.Property(e => e.FacilityLocation).HasMaxLength(100);
                 entity.Property(e => e.FacilityName).HasMaxLength(255);
+                entity.Property(e => e.FormattedFacilityName)
+                    .HasComputedColumnSql("([Converters].[CamelCaseString]([FacilityName]))", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
+                entity.Property(e => e.Latitude)
+                    .HasComputedColumnSql("([Converters].[ConvertDlsToCoordinates]([FacilityLegalSubdivision],[FacilitySection],[FacilityTownship],[FacilityRange],[FacilityMeridian]).Lat)", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
+                entity.Property(e => e.Longitude)
+                    .HasComputedColumnSql("([Converters].[ConvertDlsToCoordinates]([FacilityLegalSubdivision],[FacilitySection],[FacilityTownship],[FacilityRange],[FacilityMeridian]).Long)", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
                 entity.Property(e => e.FacilityOperationalStatus).HasMaxLength(50);
                 entity.Property(e => e.FacilityOperationalStatusDate).HasColumnType("datetime");
                 entity.Property(e => e.FacilityProvinceState).HasMaxLength(50);
@@ -690,9 +706,25 @@ namespace EnerSync.Data
                     .HasMaxLength(100)
                     .IsUnicode(false);
                 entity.Property(e => e.FinalTotalDepth).HasColumnType("decimal(10, 4)");
+                entity.Property(e => e.FormattedFieldName)
+                    .HasComputedColumnSql("([Converters].[CamelCaseString]([FieldName]))", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
+                entity.Property(e => e.FormattedWellIdentifier)
+                    .HasComputedColumnSql("((((((((((((substring([WellIdentifier],(1),(3))+'/')+substring([WellIdentifier],(4),(2)))+'-')+substring([WellIdentifier],(6),(2)))+'-')+substring([WellIdentifier],(8),(3)))+'-')+substring([WellIdentifier],(11),(2)))+'W')+substring([WellIdentifier],(14),(1)))+'/')+substring([WellIdentifier],(15),(2)))", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
                 entity.Property(e => e.HorizontalDrill)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                entity.Property(e => e.Latitude)
+                    .HasComputedColumnSql("([Converters].[ConvertDlsToCoordinates]([WellLegalSubdivision],[WellSection],[WellTownship],[WellRange],[WellMeridian]).Lat)", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
+                entity.Property(e => e.Longitude)
+                    .HasComputedColumnSql("([Converters].[ConvertDlsToCoordinates]([WellLegalSubdivision],[WellSection],[WellTownship],[WellRange],[WellMeridian]).Long)", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
                 entity.Property(e => e.LicenceNumber)
                     .HasMaxLength(50)
                     .IsUnicode(false);
@@ -816,11 +848,15 @@ namespace EnerSync.Data
             modelBuilder.Entity<WellWikiModels.Well>(entity =>
             {
                 entity.ToTable("Well", "WellWiki");
-
+                entity.Property(e => e.AlternateWellId)
+                    .HasComputedColumnSql("([Converters].[ConvertDlsToWellID]([Location]))", stored: false)
+                    .ValueGeneratedOnAddOrUpdate()
+                    .Metadata.SetAfterSaveBehavior(Microsoft.EntityFrameworkCore.Metadata.PropertySaveBehavior.Ignore);
                 entity.Property(e => e.WellId)
                     .HasMaxLength(64)
                     .IsUnicode(false)
                     .HasColumnName("WellID");
+
                 entity.Property(e => e.Country)
                     .HasMaxLength(128)
                     .IsUnicode(false);

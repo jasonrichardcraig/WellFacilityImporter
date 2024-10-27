@@ -15,6 +15,8 @@ public partial class Well
 
     public string? PreviousWellId { get; set; }
 
+    public string? FormattedWellIdentifier { get; private set; }
+
     public string? WellLocationException { get; set; }
 
     public string? WellLegalSubdivision { get; set; }
@@ -28,6 +30,10 @@ public partial class Well
     public int? WellMeridian { get; set; }
 
     public int? WellEventSequence { get; set; }
+
+    public double? Latitude { get; private set; }
+
+    public double? Longitude { get; private set; }
 
     public string? WellName { get; set; }
 
@@ -52,6 +58,8 @@ public partial class Well
     public string? Field { get; set; }
 
     public string? FieldName { get; set; }
+
+    public string? FormattedFieldName { get; private set; }
 
     public string? Area { get; set; }
 

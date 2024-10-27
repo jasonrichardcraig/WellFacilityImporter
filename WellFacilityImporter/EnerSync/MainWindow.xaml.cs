@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using EnerSync.Data;
+using System.Windows;
 
 namespace EnerSync
 {
@@ -16,7 +17,19 @@ namespace EnerSync
         {
             using (var context = new EnerSync.Data.WellFacilityRepositoryDbContext())
             {
+                var fac = context.Facilities.First();
+
+                var facFmtName = fac.FormattedFacilityName;
+
                 var well = context.WellsInfrastructure.First();
+
+                var welFormatName = well.FormattedWellIdentifier;
+
+                var well1 = context.WellsWiki.First();
+
+                var welFormatName1 = well1.AlternateWellId;
+
+                //var list = context.Facilities.Select(f=> f.ExperimentalConfidential, foo = WellFacilityRepositoryDbContext.ConvertDlsToWellID("100/01/")).ToList();
             }
         }
     }
