@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class UserDefinedFunctions
 {
-    [SqlFunction]
+    [SqlFunction(IsDeterministic = true)]
     public static SqlString CamelCaseString(SqlString input)
     {
         if (input.IsNull || input.Value.Length == 0)

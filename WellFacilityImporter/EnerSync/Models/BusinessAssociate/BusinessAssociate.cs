@@ -28,4 +28,6 @@ public partial class BusinessAssociate
     public string? BalicenceEligibiltyDesc { get; set; }
 
     public string? BaabbreviatedName { get; set; }
+
+    public string? FormattedLegalName { get; set; }
 }

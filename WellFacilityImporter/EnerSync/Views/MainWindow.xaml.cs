@@ -1,7 +1,7 @@
 ﻿using EnerSync.Data;
 using System.Windows;
 
-namespace EnerSync
+namespace EnerSync.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -15,7 +15,7 @@ namespace EnerSync
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            using (var context = new EnerSync.Data.WellFacilityRepositoryDbContext())
+            using (var context = new EnerSync.Data.EnerSyncContext())
             {
                 var fac = context.Facilities.First();
 
@@ -31,6 +31,11 @@ namespace EnerSync
 
                 //var list = context.Facilities.Select(f=> f.ExperimentalConfidential, foo = WellFacilityRepositoryDbContext.ConvertDlsToWellID("100/01/")).ToList();
             }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

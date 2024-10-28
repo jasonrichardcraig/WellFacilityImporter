@@ -42,7 +42,8 @@
                 Console.WriteLine("6: Import Well to Facility Link Data");
                 Console.WriteLine("7: Import Facility Licence Data");
                 Console.WriteLine("8: Import Well Wiki Data");
-                Console.WriteLine("9: Exit");
+                Console.WriteLine("9: Update Computed Fields");
+                Console.WriteLine("10: Exit");
                 Console.WriteLine();
                 Console.Write("Select an operation:");
                 // Get user input
@@ -77,6 +78,9 @@
                         ImportWellWikiData(connectionString);
                         break;
                     case "9":
+                        ComputedFieldsUpdater.UpdateData(connectionString);
+                        break;
+                    case "10":
                         Console.WriteLine("Exiting application...");
                         return;
                     default:

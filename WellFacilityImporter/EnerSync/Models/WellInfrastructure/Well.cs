@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetTopologySuite.Geometries;
+using System;
 using System.Collections.Generic;
 
 namespace EnerSync.Models.WellInfrastructure;
@@ -15,7 +16,7 @@ public partial class Well
 
     public string? PreviousWellId { get; set; }
 
-    public string? FormattedWellIdentifier { get; private set; }
+    public string? FormattedWellIdentifier { get; set; }
 
     public string? WellLocationException { get; set; }
 
@@ -31,11 +32,10 @@ public partial class Well
 
     public int? WellEventSequence { get; set; }
 
-    public double? Latitude { get; private set; }
-
-    public double? Longitude { get; private set; }
+    public Point? WellGeoPoint { get; set; }
 
     public string? WellName { get; set; }
+    public string? FormattedWellName { get; set; }
 
     public string? ConfidentialType { get; set; }
 
@@ -59,7 +59,7 @@ public partial class Well
 
     public string? FieldName { get; set; }
 
-    public string? FormattedFieldName { get; private set; }
+    public string? FormattedFieldName { get; set; }
 
     public string? Area { get; set; }
 
@@ -68,6 +68,8 @@ public partial class Well
     public string? PoolDeposit { get; set; }
 
     public string? PoolDepositName { get; set; }
+
+    public string? FormattedPoolDepositName { get; set; }
 
     public decimal? PoolDepositDensity { get; set; }
 
@@ -106,6 +108,8 @@ public partial class Well
     public string? LicenseeId { get; set; }
 
     public string? LicenseeName { get; set; }
+
+    public string? FormattedLicenseeName { get; set; }
 
     public string? AllowableType { get; set; }
 

@@ -88,6 +88,7 @@
     <Compile Include="Types\DLS.cs" />
     <Compile Include="Types\AddressDetail.cs" />
     <Compile Include="Functions\GetAddressFromCoordinates.cs" />
+    <Compile Include="Functions\FormatWellIdentifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="WellFacilityClrUtilities-Key.pfx" />

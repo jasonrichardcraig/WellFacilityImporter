@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Types;
+using NetTopologySuite.Geometries;
+using System;
 using System.Collections.Generic;
 
 namespace EnerSync.Models.FacilityInfrastructure;
@@ -37,9 +39,7 @@ public partial class Facility
 
     public int? FacilityMeridian { get; set; }
 
-    public double? Latitude { get; private set; }
-
-    public double? Longitude { get; private set; }
+    public Point? FacilityGeoPoint { get; set; }
 
     public string? FacilityLicenceStatus { get; set; }
 
