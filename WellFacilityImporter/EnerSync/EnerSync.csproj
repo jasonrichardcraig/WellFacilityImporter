@@ -21,9 +21,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Database_16x16.png" />
     <None Remove="Images\EnerSync_Splash.png" />
     <None Remove="Images\ES_Icon.ico" />
     <None Remove="Images\ES_Icon.png" />
+    <None Remove="Images\Facilities_24x24.png" />
+    <None Remove="Images\Server_16x16.png" />
+    <None Remove="Images\User_16x16.png" />
+    <None Remove="Images\Wells_24x24.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,8 +36,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\Database_16x16.png" />
     <Resource Include="Images\ES_Icon.ico" />
     <Resource Include="Images\ES_Icon.png" />
+    <Resource Include="Images\Facilities_24x24.png" />
+    <Resource Include="Images\Server_16x16.png" />
+    <Resource Include="Images\User_16x16.png" />
+    <Resource Include="Images\Wells_24x24.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +50,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BusyIndicators" Version="2.1.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">

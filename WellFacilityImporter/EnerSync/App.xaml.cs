@@ -3,8 +3,6 @@ using EnerSync.Data;
 using EnerSync.Services;
 using EnerSync.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
-using System.Data;
 using System.Windows;
 
 namespace EnerSync
@@ -49,6 +47,12 @@ namespace EnerSync
 
             // Register the MainViewModel
             services.AddSingleton<MainViewModel>();
+
+            // Register the WellsFilterViewModel
+            services.AddSingleton<WellsFilterViewModel>();
+
+            // Register the FacilitiesFilterViewModel
+            services.AddSingleton<FacilitiesFilterViewModel>();
         }
     }
 

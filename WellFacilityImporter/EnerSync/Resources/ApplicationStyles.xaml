@@ -1,4 +1,26 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
+    <DataTemplate x:Key="FacilitiesTabHeaterTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Width="24"
+                   Source="/Images/Facilities_24x24.png"/>
+            <TextBlock VerticalAlignment="Center"
+                       Text="Facilities"
+                       Margin="5,0,0,0"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="WellsTabHeaterTemplate">
+        <StackPanel Orientation="Horizontal">
+            <Image Height="24"
+                   Width="24"
+                   Source="/Images/Wells_24x24.png"/>
+            <TextBlock VerticalAlignment="Center"
+                       Text="Wells"
+                       Margin="5,0,0,0"/>
+        </StackPanel>
+    </DataTemplate>
+
 </ResourceDictionary>

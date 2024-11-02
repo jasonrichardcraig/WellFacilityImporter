@@ -3,63 +3,101 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:busyIndicator="https://github.com/moh3ngolshani/BusyIndicator"
+        xmlns:controls="clr-namespace:EnerSync.Views.Controls"
         xmlns:local="clr-namespace:EnerSync"
         mc:Ignorable="d"
-        Title="MainWindow"
+        Title="EnerSync"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
         Height="450"
         Width="800" 
         Icon="/Images/ES_Icon.png">
-    <StackPanel Margin="10">
-        <!-- Filter Criteria List -->
-        <ItemsControl ItemsSource="{Binding FilterCriteria}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <!-- Field Selection -->
-                        <ComboBox Width="150"
-                                  ItemsSource="{Binding DataContext.AvailableFields, RelativeSource={RelativeSource AncestorType=Window}}"
-                                  SelectedItem="{Binding FieldName}"
-                                  Margin="5"/>
-                        <!-- Operator Selection -->
-                        <ComboBox Width="100"
-                                  ItemsSource="{Binding DataContext.AvailableOperators, RelativeSource={RelativeSource AncestorType=Window}}"
-                                  SelectedItem="{Binding Operator}"
-                                  Margin="5"/>
-                        <!-- Value Input -->
-                        <TextBox Width="150"
-                                 Text="{Binding Value}"
-                                 Margin="5"/>
-                        <!-- Logical Operator Selection -->
-                        <ComboBox Width="80"
-                                  ItemsSource="{Binding DataContext.AvailableLogicalOperators, RelativeSource={RelativeSource AncestorType=Window}}"
-                                  SelectedItem="{Binding LogicalOperator}"
-                                  Margin="5"/>
-                        <!-- Remove Filter Button -->
-                        <Button Content="Remove" 
-                                Command="{Binding DataContext.RemoveFilterCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                                CommandParameter="{Binding}"
-                                Margin="5"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-
-        <!-- Add Filter Button -->
-        <Button Content="Add Filter"
-                Command="{Binding AddFilterCommand}"
-                Margin="5" />
-
-        <!-- Apply Filters Button -->
-        <Button Content="Apply Filters"
-                Command="{Binding ApplyFiltersCommand}"
-                Margin="5"/>
-
-        <!-- Filtered Results DataGrid -->
-        <DataGrid ItemsSource="{Binding FilteredCollection}"
-                  AutoGenerateColumns="True"
-                  EnableColumnVirtualization="True"
-                    EnableRowVirtualization="True"
-                  Margin="10,20,10,0" Height="324" />
-    </StackPanel>
+    <busyIndicator:BusyMask x:Name="BusyIndicator"
+                        IsBusy="{Binding IsBusy}" 
+                        IndicatorType="Grid" 
+                        BusyContent="Please wait..." 
+                        BusyContentMargin="0,20,0,0" 
+                        IsBusyAtStartup="False" >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TabControl Grid.Column="0"
+                        Grid.Row="0">
+                <TabItem HeaderTemplate="{StaticResource WellsTabHeaterTemplate}">
+                    <Grid DataContext="{Binding WellsFilterViewModel, Source={StaticResource Locator}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <controls:FilterControl Grid.Row="0" />
+                        <DataGrid Grid.Row="1"
+                                  x:Name="Foo"
+                                  SelectionChanged="Foo_SelectionChanged"
+                                  ItemsSource="{Binding FilteredWellSearchResults}"
+                                  EnableColumnVirtualization="True"
+                                  EnableRowVirtualization="True"
+                                  AutoGenerateColumns="True">
+                        </DataGrid>
+                        <Button Grid.Row="2" Content="test" Click="Button_Click_2"/>
+                    </Grid>
+                </TabItem>
+                <TabItem HeaderTemplate="{StaticResource FacilitiesTabHeaterTemplate}">
+                    <Grid DataContext="{Binding FacilitiesFilterViewModel, Source={StaticResource Locator}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <controls:FilterControl Grid.Row="0" />
+                        <DataGrid Grid.Row="1"
+              ItemsSource="{Binding FilteredFacilitiesSearchResults}"
+              EnableColumnVirtualization="True"
+              EnableRowVirtualization="True"
+              AutoGenerateColumns="True">
+                        </DataGrid>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+            <StatusBar Grid.Row="1"
+                       Grid.Column="0" >
+                <StatusBarItem ToolTip="User Name">
+                    <Image Height="16"
+                           Width="16"
+                           Source="/Images/User_16x16.png"/>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <TextBlock Text="{Binding UserName}"/>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem ToolTip="Server">
+                    <Image Height="16"
+                           Width="16"
+                        Source="/Images/Server_16x16.png"/>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <TextBlock Text="{Binding Server}"/>
+                </StatusBarItem>
+                <Separator/>
+                <StatusBarItem ToolTip="Database">
+                    <Image Height="16"
+                           Width="16"
+                           Source="/Images/Database_16x16.png"/>
+                </StatusBarItem>
+                <StatusBarItem>
+                    <TextBlock Text="{Binding Database}"/>
+                </StatusBarItem>
+            </StatusBar>
+        </Grid>
+    </busyIndicator:BusyMask>
 </Window>

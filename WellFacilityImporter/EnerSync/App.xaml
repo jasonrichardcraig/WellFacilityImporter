@@ -11,6 +11,7 @@
                     <locators:ViewModelLocator x:Key="Locator" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="Resources/ApplicationStyles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/BusyIndicator;component/Theme/Default.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
