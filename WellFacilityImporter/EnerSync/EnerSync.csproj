@@ -21,6 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Address_16x16.png" />
     <None Remove="Images\Database_16x16.png" />
     <None Remove="Images\EnerSync_Splash.png" />
     <None Remove="Images\ES_Icon.ico" />
@@ -36,6 +37,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Images\Address_16x16.png" />
     <Resource Include="Images\Database_16x16.png" />
     <Resource Include="Images\ES_Icon.ico" />
     <Resource Include="Images\ES_Icon.png" />

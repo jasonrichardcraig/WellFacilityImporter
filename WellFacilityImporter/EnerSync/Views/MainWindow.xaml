@@ -10,7 +10,8 @@
         Title="EnerSync"
         DataContext="{Binding MainViewModel, Source={StaticResource Locator}}"
         Height="450"
-        Width="800" 
+        Width="800"
+        Topmost="True"
         Icon="/Images/ES_Icon.png">
     <busyIndicator:BusyMask x:Name="BusyIndicator"
                         IsBusy="{Binding IsBusy}" 
@@ -36,18 +37,24 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="*"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <controls:FilterControl Grid.Row="0" />
                         <DataGrid Grid.Row="1"
-                                  x:Name="Foo"
-                                  SelectionChanged="Foo_SelectionChanged"
+                                  x:Name="WellSearchResultsDataGrid"
+                                  SelectionChanged="WellSearchResultsDataGrid_SelectionChanged"
                                   ItemsSource="{Binding FilteredWellSearchResults}"
                                   EnableColumnVirtualization="True"
                                   EnableRowVirtualization="True"
                                   AutoGenerateColumns="True">
+                            <DataGrid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem x:Name="LookupWellAddressMenuItem"
+                                              Icon="/Images/Address_16x16.png" 
+                                              Header="Address" 
+                                              Click="LookupWellAddressMenuItem_Click"/>
+                                </ContextMenu>
+                            </DataGrid.ContextMenu>
                         </DataGrid>
-                        <Button Grid.Row="2" Content="test" Click="Button_Click_2"/>
                     </Grid>
                 </TabItem>
                 <TabItem HeaderTemplate="{StaticResource FacilitiesTabHeaterTemplate}">
@@ -61,10 +68,12 @@
                         </Grid.RowDefinitions>
                         <controls:FilterControl Grid.Row="0" />
                         <DataGrid Grid.Row="1"
-              ItemsSource="{Binding FilteredFacilitiesSearchResults}"
-              EnableColumnVirtualization="True"
-              EnableRowVirtualization="True"
-              AutoGenerateColumns="True">
+                                  x:Name="FacilitySearchResultsDataGrid"
+                                  SelectionChanged="FacilitySearchResultsDataGrid_SelectionChanged"
+                                  ItemsSource="{Binding FilteredFacilitiesSearchResults}"
+                                  EnableColumnVirtualization="True"
+                                  EnableRowVirtualization="True"
+                                  AutoGenerateColumns="True">
                         </DataGrid>
                     </Grid>
                 </TabItem>

@@ -10,6 +10,14 @@ namespace EnerSync.ViewModels
     public class FilterViewModel : ObservableObject
     {
 
+        private int _selectedRowCount = 0;
+
+        public int SelectedRowCount
+        {
+            get => _selectedRowCount;
+            set => SetProperty(ref _selectedRowCount, value);
+        }
+
         public ObservableCollection<FilterCriteria> FilterCriteria { get; set; } = new ObservableCollection<FilterCriteria>();
         public List<string> AvailableFields { get; set; } = new List<string>(); // Can be populated by derived classes
         public List<string> AvailableOperators { get; private set; } = new List<string>();

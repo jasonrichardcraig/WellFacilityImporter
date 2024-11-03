@@ -1,7 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using EnerSync.Filters;
-using EnerSync.Models.WellInfrastructure;
+using EnerSync.Models;
 using EnerSync.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;

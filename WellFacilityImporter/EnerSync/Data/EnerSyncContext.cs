@@ -1,4 +1,6 @@
 ﻿using System;
+using EnerSync.Models;
+using System.Data;
 using Microsoft.EntityFrameworkCore;
 
 // Alias namespaces to prevent type collisions
@@ -12,6 +14,7 @@ using WellFacilityLinkModels = EnerSync.Models.WellFacilityLink;
 using WellInfrastructureModels = EnerSync.Models.WellInfrastructure;
 using WellLicenceModels = EnerSync.Models.WellLicence;
 using WellWikiModels = EnerSync.Models.WellWiki;
+using System.IO;
 
 namespace EnerSync.Data
 {
@@ -45,7 +48,7 @@ namespace EnerSync.Data
         public virtual DbSet<FacilityApprovalsDailyModels.FacilityLicence> FacilityLicences { get; set; }
 
         // FacilityInfrastructure Entities
-        public virtual DbSet<FacilityInfrastructureModels.Facility> Facilities { get; set; }
+        public virtual DbSet<FacilityInfrastructureModels.Facility> FacilityInfrastructureFacilities { get; set; }
 
         // FacilityLicence Entities
         public virtual DbSet<FacilityLicenceModels.Licence> Licences { get; set; }
@@ -71,7 +74,9 @@ namespace EnerSync.Data
         public virtual DbSet<WellWikiModels.WellPerforationTreatment> WellPerforationTreatments { get; set; }
         public virtual DbSet<WellWikiModels.WellProductionDatum> WellProductionData { get; set; }
 
-        // Define the static method representing the ConvertDlsToWellID CLR function
+        public virtual DbSet<Models.Facility> Facilities { get; set; }
+
+        public virtual DbSet<Models.Well> Wells { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -952,6 +957,213 @@ namespace EnerSync.Data
                     .HasConstraintName("FK_WellProductionData_Well");
             });
 
+            modelBuilder.Entity<Models.Facility>(entity =>
+            {
+                entity
+                    .HasNoKey()
+                    .ToView("Facilities");
+
+                entity.Property(e => e.EnergyDevelopmentCategoryId)
+                    .HasMaxLength(50)
+                    .HasColumnName("EnergyDevelopmentCategoryID");
+                entity.Property(e => e.EnergyDevelopmentCategoryType).HasMaxLength(50);
+                entity.Property(e => e.ExperimentalConfidential)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+                entity.Property(e => e.FacilityId)
+                    .HasMaxLength(50)
+                    .HasColumnName("FacilityID");
+                entity.Property(e => e.FacilityIdentifier).HasMaxLength(50);
+                entity.Property(e => e.FacilityLegalSubdivision).HasMaxLength(50);
+                entity.Property(e => e.FacilityLicenceStatus).HasMaxLength(50);
+                entity.Property(e => e.FacilityLocation).HasMaxLength(100);
+                entity.Property(e => e.FacilityName).HasMaxLength(255);
+                entity.Property(e => e.FacilityOperationalStatus).HasMaxLength(50);
+                entity.Property(e => e.FacilityOperationalStatusDate).HasColumnType("datetime");
+                entity.Property(e => e.FacilityProvinceState).HasMaxLength(50);
+                entity.Property(e => e.FacilityStartDate).HasColumnType("datetime");
+                entity.Property(e => e.FacilitySubType).HasMaxLength(50);
+                entity.Property(e => e.FacilitySubTypeDesc).HasMaxLength(255);
+                entity.Property(e => e.FacilityType).HasMaxLength(50);
+                entity.Property(e => e.FormattedFacilityName).HasMaxLength(255);
+                entity.Property(e => e.LicenceIssueDate).HasColumnType("datetime");
+                entity.Property(e => e.LicenceNumber).HasMaxLength(50);
+                entity.Property(e => e.LicenceType).HasMaxLength(50);
+                entity.Property(e => e.LicenseeBaid)
+                    .HasMaxLength(50)
+                    .HasColumnName("LicenseeBAID");
+                entity.Property(e => e.LicenseeName).HasMaxLength(255);
+                entity.Property(e => e.MeterStationPipelineLink).HasMaxLength(255);
+                entity.Property(e => e.MpfacilityIdentifier)
+                    .HasMaxLength(50)
+                    .HasColumnName("MPFacilityIdentifier");
+                entity.Property(e => e.MpfacilityProvinceState)
+                    .HasMaxLength(50)
+                    .HasColumnName("MPFacilityProvinceState");
+                entity.Property(e => e.MpfacilityType)
+                    .HasMaxLength(50)
+                    .HasColumnName("MPFacilityType");
+                entity.Property(e => e.OperatorBaid)
+                    .HasMaxLength(50)
+                    .HasColumnName("OperatorBAID");
+                entity.Property(e => e.OperatorName).HasMaxLength(255);
+                entity.Property(e => e.OperatorStartDate).HasColumnType("datetime");
+                entity.Property(e => e.OrphanWellFlg)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+                entity.Property(e => e.TerminalPipelineLink).HasMaxLength(255);
+                entity.Property(e => e.TierAggregateId)
+                    .HasMaxLength(50)
+                    .HasColumnName("TierAggregateID");
+                entity.Property(e => e.TierAggregatePr)
+                    .HasMaxLength(255)
+                    .HasColumnName("TierAggregatePR");
+                entity.Property(e => e.TpfacilityIdentifier)
+                    .HasMaxLength(50)
+                    .HasColumnName("TPFacilityIdentifier");
+                entity.Property(e => e.TpfacilityProvinceState)
+                    .HasMaxLength(50)
+                    .HasColumnName("TPFacilityProvinceState");
+                entity.Property(e => e.TpfacilityType)
+                    .HasMaxLength(50)
+                    .HasColumnName("TPFacilityType");
+            });
+
+            modelBuilder.Entity<Models.Well>(entity =>
+            {
+                entity
+                    .HasNoKey()
+                    .ToView("Wells");
+
+                entity.Property(e => e.AllowableType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.Area)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.AreaName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.ConfidentialType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.ExperimentalConfidentialIndicator)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+                entity.Property(e => e.Field)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+                entity.Property(e => e.FieldName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.FinalTotalDepth).HasColumnType("decimal(10, 4)");
+                entity.Property(e => e.FormattedFieldName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.FormattedLicenseeName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+                entity.Property(e => e.FormattedPoolDepositName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.FormattedWellIdentifier)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.FormattedWellName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+                entity.Property(e => e.HorizontalDrill)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.LicenceNumber)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.LicenceStatus)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.LicenceType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.LicenseeId)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("LicenseeID");
+                entity.Property(e => e.LicenseeName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+                entity.Property(e => e.MaxTrueVerticalDepth).HasColumnType("decimal(10, 4)");
+                entity.Property(e => e.OrphanWellFlg)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .IsFixedLength();
+                entity.Property(e => e.PoolDeposit)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.PoolDepositDensity).HasColumnType("decimal(10, 4)");
+                entity.Property(e => e.PoolDepositName)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+                entity.Property(e => e.PreviousWellId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("PreviousWellID");
+                entity.Property(e => e.RecoveryMechanismType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.VolumetricGasWellLiquidType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellId)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("WellID");
+                entity.Property(e => e.WellIdentifier)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellLegalSubdivision)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellLocationException)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellName)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellProvinceState)
+                    .HasMaxLength(2)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusFluid)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusFluidCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusMode)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusModeCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusStructure)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusStructureCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellStatusTypeCode)
+                    .HasMaxLength(10)
+                    .IsUnicode(false);
+                entity.Property(e => e.WellType)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
             // WellInfrastructure Wells Configuration (to differentiate from other Wells)
             modelBuilder.Entity<WellInfrastructureModels.Well>().ToTable("Well", "WellInfrastructure");
 
@@ -967,5 +1179,45 @@ namespace EnerSync.Data
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+
+        public async Task<AddressDetail> GetAddressFromCoordinatesAsync(double latitude, double longitude)
+        {
+            // Define a command to call the SQL function
+            using (var command = Database.GetDbConnection().CreateCommand())
+            {
+                command.CommandText = "SELECT Geocoding.GetAddressFromCoordinates(@latitude, @longitude)";
+                command.CommandType = CommandType.Text;
+
+                // Define parameters
+                var latitudeParam = command.CreateParameter();
+                latitudeParam.ParameterName = "@latitude";
+                latitudeParam.Value = latitude;
+                command.Parameters.Add(latitudeParam);
+
+                var longitudeParam = command.CreateParameter();
+                longitudeParam.ParameterName = "@longitude";
+                longitudeParam.Value = longitude;
+                command.Parameters.Add(longitudeParam);
+
+                // Open the connection if it's not open
+                if (command.Connection!.State != ConnectionState.Open)
+                    await command.Connection.OpenAsync();
+
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    if (await reader.ReadAsync())
+                    {
+                        // Map the result to AddressDetail
+                        var addressDetail = new AddressDetail();
+                        using (var binaryReader = new BinaryReader(reader.GetStream(0)))
+                        {
+                            addressDetail.Read(binaryReader);
+                        }
+                        return addressDetail;
+                    }
+                    return AddressDetail.Null;
+                }
+            }
+        }
     }
 }
