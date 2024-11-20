@@ -1162,6 +1162,8 @@ namespace EnerSync.Data
                 entity.Property(e => e.WellType)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+                entity.Property(e => e.WellWikiRowExists)
+                .ValueGeneratedOnAddOrUpdate();
             });
 
             // WellInfrastructure Wells Configuration (to differentiate from other Wells)

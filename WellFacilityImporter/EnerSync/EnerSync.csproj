@@ -30,6 +30,9 @@
     <None Remove="Images\Server_16x16.png" />
     <None Remove="Images\User_16x16.png" />
     <None Remove="Images\Wells_24x24.png" />
+    <None Remove="Images\WellWiki_16x16.png" />
+    <None Remove="Images\WellWiki_24x24.png" />
+    <None Remove="Images\WellWiki_Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -45,6 +48,9 @@
     <Resource Include="Images\Server_16x16.png" />
     <Resource Include="Images\User_16x16.png" />
     <Resource Include="Images\Wells_24x24.png" />
+    <Resource Include="Images\WellWiki_16x16.png" />
+    <Resource Include="Images\WellWiki_24x24.png" />
+    <Resource Include="Images\WellWiki_Logo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -54,6 +60,7 @@
   <ItemGroup>
     <PackageReference Include="BusyIndicators" Version="2.1.2" />
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.3.2" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.70" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10">
       <PrivateAssets>all</PrivateAssets>

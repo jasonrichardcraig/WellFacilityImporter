@@ -1,9 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using EnerSync.Filters;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Reflection;
-using System.Windows.Input;
 
 namespace EnerSync.ViewModels
 {
@@ -12,10 +11,21 @@ namespace EnerSync.ViewModels
 
         private int _selectedRowCount = 0;
 
+        private IList selectedItems = null!;
+
         public int SelectedRowCount
         {
-            get => _selectedRowCount;
-            set => SetProperty(ref _selectedRowCount, value);
+            get => SelectedItems?.Count ?? 0;
+        }
+
+        public IList SelectedItems
+        {
+            get => selectedItems;
+            set
+            {
+                SetProperty(ref selectedItems, value);
+                OnPropertyChanged(nameof(SelectedRowCount));
+            }
         }
 
         public ObservableCollection<FilterCriteria> FilterCriteria { get; set; } = new ObservableCollection<FilterCriteria>();

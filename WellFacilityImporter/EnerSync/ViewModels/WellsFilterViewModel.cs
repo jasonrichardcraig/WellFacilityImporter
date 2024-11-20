@@ -68,7 +68,7 @@ namespace EnerSync.ViewModels
             }
         }
 
-        private async Task ApplyFilters()
+        public async Task ApplyFilters()
         {
             _mainViewModel.IsBusy = true;
 

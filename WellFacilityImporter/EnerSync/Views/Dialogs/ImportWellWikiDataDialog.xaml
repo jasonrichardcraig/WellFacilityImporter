@@ -1,0 +1,38 @@
+﻿<Window x:Class="EnerSync.Views.Dialogs.ImportWellWikiDataDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EnerSync.Views.Dialogs"
+        mc:Ignorable="d"
+        DataContext="{Binding WellWikiImporterViewModel, Source={StaticResource Locator}}"
+        Title="Import WellWiki Data"
+        Icon="/Images/WellWiki_16x16.png"
+        Height="450"
+        Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Image Height="64" Source="/Images/WellWiki_Logo.png"/>
+        <DataGrid Grid.Column="0"
+                  Grid.ColumnSpan="2"
+                  Grid.Row="1"
+                 ItemsSource="{Binding ImportProgressLog}"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Time Stamp"
+                                    Width="160"
+                                    Binding="{Binding TimeStamp}"/>
+                <DataGridTextColumn Header="Message"
+                                    Width="*"
+                                    Binding="{Binding Message}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

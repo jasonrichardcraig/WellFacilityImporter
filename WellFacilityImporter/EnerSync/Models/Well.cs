@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EnerSync.Models;
 
@@ -120,4 +121,6 @@ public partial class Well
     public string? RecoveryMechanismType { get; set; }
 
     public string? OrphanWellFlg { get; set; }
+
+    public bool WellWikiRowExists { get; set; }
 }

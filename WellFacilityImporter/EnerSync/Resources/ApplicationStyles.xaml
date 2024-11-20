@@ -1,6 +1,15 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+
+    <Style x:Key="WellSearchResultsDataGridStyle" TargetType="DataGridRow">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding WellWikiRowExists}" Value="True">
+                <Setter Property="Background" Value="Orange"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <DataTemplate x:Key="FacilitiesTabHeaterTemplate">
         <StackPanel Orientation="Horizontal">
             <Image Height="24"

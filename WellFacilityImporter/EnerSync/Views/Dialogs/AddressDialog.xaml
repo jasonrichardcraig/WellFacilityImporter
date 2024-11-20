@@ -6,7 +6,6 @@
         xmlns:local="clr-namespace:EnerSync.Views.Dialogs"
         mc:Ignorable="d"
         ResizeMode="NoResize"
-        Topmost="True"
         Title="Address"
         Icon="/Images/Address_16x16.png"
         Height="360"

@@ -1,11 +1,16 @@
-﻿namespace WellFacilityImporter
+﻿using CommandLine;
+
+namespace WellFacilityImporter
 {
     internal class Program
     {
         private static readonly string defaultConnectionString = "Data Source=(local);Initial Catalog=WellFacilityRepository;Integrated Security=True;Encrypt=False";
         private static readonly string defaultBaseDataDirectory = $"{Environment.GetFolderPath(Environment.SpecialFolder.UserProfile)}\\WellFacilityImporter\\Data";
-        static void Main()
+
+        static void Main(string[] args)
         {
+
+            //TODO: Add command line arguments for connection string and base data directory
 
             Console.WriteLine("Welcome to the Well Facility Importer!");
             Console.WriteLine("=======================================");

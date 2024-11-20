@@ -9,6 +9,7 @@ namespace EnerSync.Locators
         public MainViewModel MainViewModel => Ioc.Default.GetService<MainViewModel>() ?? null!;
         public WellsFilterViewModel WellsFilterViewModel => Ioc.Default.GetService<WellsFilterViewModel>() ?? null!;
         public FacilitiesFilterViewModel FacilitiesFilterViewModel => Ioc.Default.GetService<FacilitiesFilterViewModel>() ?? null!;
+        public WellWikiImporterViewModel WellWikiImporterViewModel => Ioc.Default.GetService<WellWikiImporterViewModel>() ?? null!;
 #pragma warning restore CA1822 // Mark members as static
     }
 }

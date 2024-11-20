@@ -53,6 +53,9 @@ namespace EnerSync
 
             // Register the FacilitiesFilterViewModel
             services.AddSingleton<FacilitiesFilterViewModel>();
+
+            // Register the WellWikiImporterViewModel
+            services.AddSingleton<WellWikiImporterViewModel>();
         }
     }
 
